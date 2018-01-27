@@ -161,11 +161,12 @@ app.post("/urls", (req, res) => {
 
 //route to urls/:id
 app.get('/urls/:id', (req, res) => {
+  var userEmail = getEmail(req.session.userId);
   if(!getUser(req.params.id, req.session.userId)) {
     res.status(403);
     res.send("Invalid user");
   } else {
-    res.render("urls_update", {id: req.params.id, userId: req.session.userId});
+    res.render("urls_update", {id: req.params.id, userId: req.session.userId, email: userEmail});
   }
 });
 app.post('/urls/:id', (req, res) => {
@@ -237,7 +238,6 @@ function fetchLongUrl(shortUrl) {
 
 function getUser(id, user) {
   for (var urls in urlDatabase[user]) {
-    console.log(urls, id, user);
     if (urls === id) {
       return true;
     }
@@ -246,9 +246,7 @@ function getUser(id, user) {
 }
 
 function getEmail(id) {
-  if(!id) {
-    return undefined;
-  } else if (users[id]) {
+  if(users[id]) {
     return users[id].email;
   } else {
     return undefined;
