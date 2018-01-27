@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>TinyApp</title>
+</head>
+<body>
+  <% if(userId) {%>
+    <%-include('partials/_header.ejs')%>
+      <% for(var url in urls[userId]) { %>
+      <form action = "/urls/<%= url %>?_method=DELETE" method = "POST" style = "margin:15px;">
+        <table>
+          <tr>
+            <td width = "80"><label for="shortURL"><%= url %></label></td>
+            <td width = "200"><a href = <%= urls[userId][url].longURL %> > <%= urls[userId][url].longURL %></a></td>
+            <td width = "80"><a href = "/urls/<%= url %>/update"> Edit </a></td>
+            <td><label for="count"><%= urls[userId][url].count %></label></td>
+            <td width = "20"><button type="submit" value="Delete">🗑️</button></td></br>
+          </tr>
+        </table>
+      </form>
+      <% } %>
+        <h2>
+          <a href="/urls/new">Click here to shorten your url!!</a>
+        </h2>.
+      <% } else { %>
+        <%-include('partials/_header.ejs')%>
+  <% } %>
+</body>
+</html>

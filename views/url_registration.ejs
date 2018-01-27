@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>TinyApp</title>
+</head>
+<body>
+  <%-include('partials/_header.ejs')%>
+  <form action="/register" method = "POST">
+    <table width = "100%">
+      <tr>
+        <td>
+          <label for="email">Email</label>
+          <input type="email" name="email">
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label for="password">Password</label>
+          <input type="password" name="password">
+        </td>
+      </tr>
+    </table>
+    <button type = "submit" name="submit">Create Account</button>
+  </form>
+</body>
+</html>
