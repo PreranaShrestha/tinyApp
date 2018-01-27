@@ -17,7 +17,7 @@ var PORT = process.env.PORT || 8080;
 var urlDatabase = {
   "userRandomID": {
     "b2xVn2": {
-      "longURL": "http://www.lighthouselabs.ca",
+      "longURL": "lighthouselabs.ca",
       "count": 2
     },
     "b1xVe2": {
@@ -48,13 +48,14 @@ const users = {
 
 //route to /
 app.get('/', (req, res) => {
-  res.redirct('/urls');
+  res.redirect('/urls');
 });
 
 
 //route to register
 app.get('/register', (req, res) => {
-  res.render("url_registration", {urls: urlDatabase, userId: req.session.userId});
+  const userEmail = getEmail(req.session.userId);
+  res.render("url_registration", {urls: urlDatabase, email: userEmail});
 });
 app.post('/register', (req, res) => {
   var userRandom = generateRandomString();
@@ -86,7 +87,11 @@ app.get('/u/:id', (req, res) => {
     res.status(403);
     res.send("Invalid shortURL");
   } else {
-    res.redirect(longURL);
+    if (!/https\:\\www\./.test("https:\\www.hotmail.com")) {
+      res.redirect(longURL);
+    } else {
+      res.redirect("https://www." + longURL);
+    }
   }
 });
 
@@ -110,7 +115,7 @@ app.post('/login', (req, res) => {
     res.send("Empty email or password");
   } else if (existEmail && existPassword) {
     req.session.userId = existUserId;
-    res.render('urls_index', {urls: urlDatabase, userId: existUserId});
+    res.redirect('/urls');
   } else {
     res.status(403);
     res.send("Invalid email or password");
@@ -119,17 +124,18 @@ app.post('/login', (req, res) => {
 
 //route to delete
 app.delete("/urls/:id", (req, res) => {
-  delete urlDatabase[req.session.userId][req.params.id].longURL;
+  delete urlDatabase[req.session.userId][req.params.id];
   res.redirect('/urls');
 });
 
 //route to create
 app.get('/urls/new', (req, res) => {
-  if(!req.session.userId) {
+  var userEmail = getEmail(req.session.userId);
+  if(!userEmail) {
     res.status(403);
-    res.redirect('/login')
+    res.redirect('/register')
   } else {
-    res.render('urls_new', {userId: req.session.userId});
+    res.render('urls_new', {userId: req.session.userId, email: userEmail});
   }
 });
 app.post("/urls", (req, res) => {
@@ -159,7 +165,7 @@ app.get('/urls/:id', (req, res) => {
     res.status(403);
     res.send("Invalid user");
   } else {
-    res.render("urls_update", {id: req.params.id, userId: req.session.userId });
+    res.render("urls_update", {id: req.params.id, userId: req.session.userId});
   }
 });
 app.post('/urls/:id', (req, res) => {
@@ -175,11 +181,12 @@ app.post('/urls/:id', (req, res) => {
 
 //route to update
 app.get('/urls/:id/update', (req, res) => {
+  var userEmail = getEmail(req.session.userId);
   if(!getUser(req.params.id, req.session.userId)) {
     res.status(403);
     res.send("Invalid user");
   } else {
-  res.render("urls_update", {id: req.params.id, userId: req.session.userId });
+  res.render("urls_update", {id: req.params.id, userId: req.session.userId, email: userEmail});
 }
 });
 app.put("/urls/:id", (req, res) => {
@@ -195,11 +202,12 @@ app.post("/logout", (req,res) => {
 
 //route to urls
 app.get('/urls', (req, res) => {
-  if(!req.session.userId) {
-    res.status(403);
-    res.send("Invalid urls(user/url)");
+  var userEmail = getEmail(req.session.userId);
+  if(!userEmail) {
+    res.redirect('/register')
+  } else {
+   res.render('urls_index', {urls: urlDatabase, email: userEmail, userId: req.session.userId});
   }
- res.render('urls_index', {urls: urlDatabase, userId: req.session.userId });
 });
 
 //listen at port 8080
@@ -229,11 +237,22 @@ function fetchLongUrl(shortUrl) {
 
 function getUser(id, user) {
   for (var urls in urlDatabase[user]) {
+    console.log(urls, id, user);
     if (urls === id) {
       return true;
     }
   }
   return false;
+}
+
+function getEmail(id) {
+  if(!id) {
+    return undefined;
+  } else if (users[id]) {
+    return users[id].email;
+  } else {
+    return undefined;
+  }
 }
 
 

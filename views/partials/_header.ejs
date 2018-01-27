@@ -1,5 +1,5 @@
 <header>
-  <% if(!userId) {%>
+  <% if(!email) {%>
      <h1> Login form</h1>
         <form method="POST" action="/login" style="font-size:12px; padding:10px;">
           <label for="email">Email</label>
@@ -9,7 +9,7 @@
           <button type="submit">login</button>
         </form>
   <% } else{ %>
-      <h3><%= userId %></h3>
+      <h3><%= email %></h3>
      <form method="POST" action="/logout">
       <button type="submit" value="submit">Logout</button>
      </form>
