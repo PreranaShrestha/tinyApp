@@ -130,7 +130,7 @@ app.delete("/urls/:id", (req, res) => {
 
 //route to create
 app.get('/urls/new', (req, res) => {
-  var userEmail = getEmail(req.session.userId);
+  const userEmail = getEmail(req.session.userId);
   if(!userEmail) {
     res.status(403);
     res.redirect('/register')
@@ -161,7 +161,7 @@ app.post("/urls", (req, res) => {
 
 //route to urls/:id
 app.get('/urls/:id', (req, res) => {
-  var userEmail = getEmail(req.session.userId);
+  const userEmail = getEmail(req.session.userId);
   if(!getUser(req.params.id, req.session.userId)) {
     res.status(403);
     res.send("Invalid user");
@@ -182,7 +182,7 @@ app.post('/urls/:id', (req, res) => {
 
 //route to update
 app.get('/urls/:id/update', (req, res) => {
-  var userEmail = getEmail(req.session.userId);
+  const userEmail = getEmail(req.session.userId);
   if(!getUser(req.params.id, req.session.userId)) {
     res.status(403);
     res.send("Invalid user");
@@ -203,7 +203,7 @@ app.post("/logout", (req,res) => {
 
 //route to urls
 app.get('/urls', (req, res) => {
-  var userEmail = getEmail(req.session.userId);
+  const userEmail = getEmail(req.session.userId);
   if(!userEmail) {
     res.redirect('/register')
   } else {
