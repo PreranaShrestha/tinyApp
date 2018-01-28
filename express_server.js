@@ -87,10 +87,10 @@ app.get('/u/:id', (req, res) => {
     res.status(403);
     res.send("Invalid shortURL");
   } else {
-    if (!/https\:\\www\./.test("https:\\www.hotmail.com")) {
-      res.redirect(longURL);
-    } else {
+    if (!/https\:\\www\./.test("longURL")) {
       res.redirect("https://www." + longURL);
+    } else {
+      res.redirect(longURL);
     }
   }
 });
