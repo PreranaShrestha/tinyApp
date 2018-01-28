@@ -18,17 +18,24 @@ var urlDatabase = {
   "userRandomID": {
     "b2xVn2": {
       "longURL": "lighthouselabs.ca",
-      "count": 2
+      "count": 2,
+      "dateCreated": "23/23/1984",
+      "uniqueVisitors": ["fdf", "dfs", "dfd"]
     },
     "b1xVe2": {
       "longURL": "http://www.google.ca",
-      "count": 1
+      "count": 2,
+      "dateCreated": "45/45/5454",
+      "uniqueVisitors": ["djf"]
     }
   },
   "user2RandomID": {
     "b2zVn2": {
       "longURL": "http://www.lighthouselabs.ca",
-      "count": 3
+      "count": 3,
+      "dateCreated": "78/32/32",
+      "uniqueVisitors": ["b2zVn2"]
+
     }
   }
 };
@@ -144,17 +151,13 @@ app.post("/urls", (req, res) => {
   const user = req.session.userId;
   if(urlDatabase[user] === undefined) {
     urlDatabase[user] = {};
-    if(urlDatabase[user][shortURL] === undefined){
-      urlDatabase[user][shortURL] = {};
-      urlDatabase[user][shortURL].longURL = longURL;
-      urlDatabase[user][shortURL].count = 0;
-    }
-  } else {
-    if(urlDatabase[user][shortURL] === undefined){
-      urlDatabase[user][shortURL] = {};
-      urlDatabase[user][shortURL].longURL = longURL;
-      urlDatabase[user][shortURL].count = 0;
-    }
+  }
+  if(urlDatabase[user][shortURL] === undefined){
+    urlDatabase[user][shortURL] = {};
+    urlDatabase[user][shortURL].longURL = longURL;
+    urlDatabase[user][shortURL].dateCreated = getDate();
+    urlDatabase[user][shortURL].count = 0;
+    urlDatabase[user][shortURL].uniqueVisitors = [];
   }
   res.redirect('/urls');
 });
@@ -229,6 +232,12 @@ function fetchLongUrl(shortUrl) {
     for(var urls in urlDatabase[users]) {
       if(urls === shortUrl) {
         urlDatabase[users][urls].count++;
+        const uniqueVisitor = urlDatabase[users][urls].uniqueVisitors.filter(function(visitor) {
+        return visitor === users;
+        });
+        if (uniqueVisitor.length === 0) {
+          urlDatabase[users][urls].uniqueVisitors.push(users);
+        }
         return urlDatabase[users][urls].longURL;
       }
     }
@@ -251,6 +260,20 @@ function getEmail(id) {
   } else {
     return undefined;
   }
+}
+
+function getDate() {
+  var today = new Date();
+  var dd = today.getDate();
+  var mm = today.getMonth()+1;
+  var yyyy = today.getFullYear();
+  if(dd<10) {
+      dd = '0'+dd
+  }
+  if(mm<10) {
+      mm = '0'+mm
+  }
+ return mm + '/' + dd + '/' + yyyy;
 }
 
 
