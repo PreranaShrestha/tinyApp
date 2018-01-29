@@ -5,10 +5,16 @@ The app will allow users to shorten long URLs much like TinyURL.com and bit.ly d
 
 ## Final Output
 
-!["Login Page"](https://github.com/PreranaShrestha/tinyApp/blob/master/doc/Screen%20Shot%202018-01-27%20at%203.14.37%20PM.png).
-!["Edit Page"](https://github.com/PreranaShrestha/tinyApp/blob/master/doc/Screen%20Shot%202018-01-27%20at%203.21.46%20PM.png).
-!["Update Page"](https://github.com/PreranaShrestha/tinyApp/blob/master/doc/Screen%20Shot%202018-01-27%20at%203.22.32%20PM.png).
-!["Create short URL"](https://github.com/PreranaShrestha/tinyApp/blob/master/doc/Screen%20Shot%202018-01-27%20at%203.22.55%20PM.png).
+!["Login Page"](https://github.com/PreranaShrestha/tinyApp/blob/master/doc/login-form.png).
+
+
+!["Index Page"](https://github.com/PreranaShrestha/tinyApp/blob/master/doc/index.png).
+
+
+!["Update Page"](https://github.com/PreranaShrestha/tinyApp/blob/master/doc/updateForm.png).
+
+
+!["Create short URL"](https://github.com/PreranaShrestha/tinyApp/blob/master/doc/create-form.png).
 
 
 
